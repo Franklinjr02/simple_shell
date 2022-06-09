@@ -49,18 +49,18 @@ void exec_args(char *a[])
 		{
 			printf("No such file or directory\n");
 		}
-		exit (0);
+		exit(0);
 	}
 	else
 		wait(NULL);
 }
 /**
  * main - the main function
- * 
+ *
  * Return: int
  */
 
-int main()
+int main(void)
 {
 	char inputString[100], *args[10];
 	int x;
