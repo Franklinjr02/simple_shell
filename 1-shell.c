@@ -23,9 +23,12 @@ int processString(char *str, char *a[])
 {
 	int i;
 
-	for (i = 0; i < 1; i++)
+	a[0] = strtok(str, " ");
+	for (i = 1; i < 10; i++)
 	{
-		a[i] = strtok(str, " ");
+		a[i] = strtok(NULL, " ");
+		if (a[i] == NULL)
+			break;
 		if (strlen(a[i]) == 0)
 			i--;
 	}
@@ -42,7 +45,7 @@ void exec_args(char *a[])
 	}
 	else if (pid == 0)
 	{
-		if (execve(a[0], a, NULL) < 0)
+		if (execve(a[0], &a[0], NULL) == -1)
 		{
 			printf("No such file or directory\n");
 		}
