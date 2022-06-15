@@ -1,1 +1,1 @@
-creating a simple shell using C programming language
+our simple shell collaborative task
