@@ -1,9 +1,4 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include "shell.h"
 
 /**
  * read_line - reads the input string.
@@ -20,4 +15,3 @@ char *read_line(int *i_eof)
 
 	return (input);
 }
-
