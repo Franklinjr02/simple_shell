@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int takeInput(char *str)
+char *takeInput()
 {
 	char *line = NULL;
 	ssize_t r;
@@ -13,11 +13,10 @@ int takeInput(char *str)
 
 	if ((r = getline(&line, &len, stdin)) != -1)
 	{
-		strcpy(str, line);
-		return (0);
+		return (line);
 	}
 	else
-		return (1);
+		return (NULL);
 }
 int processString(char *str, char *a[])
 {
@@ -45,7 +44,8 @@ void exec_args(char *a[])
 	}
 	else if (pid == 0)
 	{
-		if (execve(a[0], &a[0], NULL) == -1)
+		execve(a[0], a, NULL);
+		if (execve(a[0], a, NULL) < 0)
 		{
 			printf("No such file or directory\n");
 		}
@@ -62,38 +62,18 @@ void exec_args(char *a[])
 
 int main(void)
 {
-	char inputString[100], *args[10];
+	char *inputString, *args[10];
 	int x;
 
 	while (1)
 	{
 		printf("$ ");
-		if (takeInput(inputString))
+		inputString = takeInput();
+		if (inputString == NULL)
 			continue;
 		x = processString(inputString, args);
 		if (x == 1)
 			exec_args(args);
 	}
 	return (0);
-	/*pid_t p;
-
-	p = fork();
-	if (p == -1)
-	{
-		perror("Error:");
-		return (1);
-	}
-	else if (p == 0)
-	{
-		{
-			printf("$ ");
-			if (execve(line, &line, NULL) == -1)
-			{
-				perror("Error");
-			}
-			wait(NULL);
-		}
-	}
-	free(line);
-	return (0);*/
 }

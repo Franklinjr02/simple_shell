@@ -1,31 +1,24 @@
 #include "shell.h"
 
 /**
- * exit_shell - exits the shell
+ * exec_line - executes a line
  *
  * @datash: data relevant (status and args)
  * Return: 0 on success.
  */
-int exit_shell(data_shell *datash)
+int exec_line(data_shell *datash)
 {
-	unsigned int ustatus;
-	int is_digit;
-	int str_len;
-	int big_number;
+	pid_t cpid;
 
-	if (datash->args[1] != NULL)
+	cpid = fork();
+	if (cpid == -1)
 	{
-		ustatus = _atoi(datash->args[1]);
-		is_digit = _isdigit(datash->args[1]);
-		str_len = _strlen(datash->args[1]);
-		big_number = ustatus > (unsigned int)INT_MAX;
-		if (!is_digit || str_len > 10 || big_number)
-		{
-			get_error(datash, 2);
-			datash->status = 2;
-			return (1);
-		}
-		datash->status = (ustatus % 256);
+		perror("Fork failed\n");
+		return (0);
 	}
+	if (cpid == 0)
+		execve(datash->input, datash->av, datash->_environ);
+	else
+		wait(NULL);
 	return (0);
 }
